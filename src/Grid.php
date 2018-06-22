@@ -744,16 +744,16 @@ class Grid
     public function resource($path = null)
     {
         if (!empty($path)) {
-            $this->resourcePath = $path;
+            $this->resourcePath = url($path);
 
             return $this;
         }
 
         if (!empty($this->resourcePath)) {
-            return $this->resourcePath;
+            return url($this->resourcePath);
         }
 
-        return app('request')->getPathInfo();
+        return url(app('request')->getPathInfo());
         //return app('router')->current()->getPath();
     }
 
