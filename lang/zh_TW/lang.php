@@ -29,7 +29,7 @@ return [
     'order'        => '排序',
     'expand'       => '展開',
     'collapse'     => '收起',
-    'filter'       => '帥選',
+    'filter'       => '篩選',
     'close'        => '關閉',
     'show'         => '顯示',
     'entries'      => '條',
