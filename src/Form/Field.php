@@ -96,6 +96,13 @@ class Field implements Renderable
     protected $rules = '';
 
     /**
+     * Validation messages.
+     *
+     * @var array
+     */
+    protected $validationMessages = [];
+
+    /**
      * Css required by this field.
      *
      * @var array
@@ -229,7 +236,7 @@ class Field implements Renderable
      *
      * @return array|mixed|string
      */
-    protected function formatName($column)
+    public function formatName($column)
     {
         if (is_string($column)) {
             $name = explode('.', $column);
@@ -368,13 +375,23 @@ class Field implements Renderable
     }
 
     /**
+     * Get the field options.
+     *
+     * @return array
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
      * Get or set rules.
      *
      * @param null $rules
      *
      * @return mixed
      */
-    public function rules($rules = null)
+    public function rules($rules = null, $messages = [])
     {
         if (is_null($rules)) {
             return $this->rules;
@@ -383,6 +400,8 @@ class Field implements Renderable
         $rules = array_filter(explode('|', "{$this->rules}|$rules"));
 
         $this->rules = implode('|', $rules);
+
+        $this->validationMessages = $messages;
 
         return $this;
     }
@@ -561,7 +580,7 @@ class Field implements Renderable
             }
         }
 
-        return Validator::make($input, $rules, [], $attributes);
+        return Validator::make($input, $rules, $this->validationMessages, $attributes);
     }
 
     /**
@@ -803,6 +822,20 @@ class Field implements Renderable
         $class = explode('\\', get_called_class());
 
         return 'admin::form.'.strtolower(end($class));
+    }
+
+    /**
+     * Set view of this field.
+     *
+     * @param string $view
+     *
+     * @return string
+     */
+    public function setView($view)
+    {
+        $this->view = $view;
+
+        return $this;
     }
 
     /**
